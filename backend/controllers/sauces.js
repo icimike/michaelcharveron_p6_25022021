@@ -5,7 +5,7 @@
 const Sauces = require('../models/sauces');
 const fs = require('fs');
 
-// Fonction de création d'une sauce [C]
+// Fonction de création d'une sauce
 /*
 Dans cette fonction createSauces :
 
