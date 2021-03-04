@@ -13,14 +13,20 @@ const userRoutes = require('./routes/user');
 const app = express();
 app.use(cors());
 
-// Connexion a la base de données MongoDB
-mongoose.connect('mongodb+srv://mic:9avMYlGSjBDH0d4b@cluster0.tep76.mongodb.net/Cluster0?retryWrites=true&w=majority',
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
+
+// utilisation du module 'dotenv' pour masquer les informations de connexion à la base de données à l'aide de variables d'environnement
+require('dotenv').config();
+
+// Connection à la base de données MongoDB avec la sécurité vers le fichier .env pour cacher le mot de passe
+// L'un des avantages que nous avons à utiliser Mongoose pour gérer notre base de données MongoDB est que nous pouvons implémenter des schémas de données stricts
+// qui permettent de rendre notre application plus robuste
+mongoose.connect(process.env.DB_URI, {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
-
-console.log (app._router);
 
 // Cette partie configure et autorise les requêtes Multi-Origin; définit les Headers & les Methodes
 app.use((req, res, next) => {

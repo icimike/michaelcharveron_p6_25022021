@@ -1,7 +1,5 @@
 // import du package HTTP natif de Node (permet de créer un serveur)
 const http = require('http');
-// const { type } = require('os');
-
 
 const app = require('./app');
 

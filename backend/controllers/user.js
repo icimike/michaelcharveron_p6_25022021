@@ -18,8 +18,14 @@ il s'agit d'une fonction asynchrone qui renvoie une Promise dans laquelle nous r
 dans notre bloc then , nous créons un utilisateur et l'enregistrons dans la base de données, en renvoyant une réponse de réussite en cas de succès, 
 et des erreurs avec le code d'erreur en cas d'échec ;
 */
+
 exports.signup = (req, res, next) => {
-  bcrypt.hash(req.body.password, 10)
+  //regex pour exiger un mot de passe fort d'au moins 8 caractères
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,}$/; 
+  const password = req.body.password;
+
+  if (password.match(regex)) {
+  bcrypt.hash(password, 10)
     .then(hash => {
       const user = new User({
         email: req.body.email,
@@ -30,7 +36,11 @@ exports.signup = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
     })
     .catch(error => res.status(500).json({ error }));
+  } else {
+    throw new Error("Le mot de passe n'est pas assez sécurisé");
+  }
 };
+
 
 // Fonction de Login
 /*
