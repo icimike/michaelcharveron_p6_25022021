@@ -7,21 +7,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 // Fonction de Signup
-/*
-Dans cette fonction singup :
-
-nous appelons la fonction de hachage de bcrypt dans notre mot de passe et lui demandons de « saler » le mot de passe 10 fois. 
-Plus la valeur est élevée, plus l'exécution de la fonction sera longue, et plus le hachage sera sécurisé.
-
-il s'agit d'une fonction asynchrone qui renvoie une Promise dans laquelle nous recevons le hash généré ;
-
-dans notre bloc then , nous créons un utilisateur et l'enregistrons dans la base de données, en renvoyant une réponse de réussite en cas de succès, 
-et des erreurs avec le code d'erreur en cas d'échec ;
-*/
-
 exports.signup = (req, res, next) => {
-  //regex pour exiger un mot de passe fort d'au moins 8 caractères
-  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,}$/; 
+  // regex pour exiger un mot de passe fort (Minimum eight characters, at least one letter and one number)
+  const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  // regex pour un mot de passe plus fort :
+  // (Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character)
+  // const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,}$/; 
   const password = req.body.password;
 
   if (password.match(regex)) {
@@ -41,20 +32,7 @@ exports.signup = (req, res, next) => {
   }
 };
 
-
 // Fonction de Login
-/*
-nous utilisons la fonction sign de jsonwebtoken pour encoder un nouveau token ;
-
-ce token contient l'ID de l'utilisateur en tant que payload (les données encodées dans le token) ;
-
-nous utilisons une chaîne secrète de développement temporaire RANDOM_SECRET_KEY pour encoder notre token 
-(à remplacer par une chaîne aléatoire beaucoup plus longue pour la production) ;
-
-nous définissons la durée de validité du token à 24 heures. L'utilisateur devra donc se reconnecter au bout de 24 heures ;
-
-nous renvoyons le token au front-end avec notre réponse.
-*/
 exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email })
   .then(user => {

@@ -5,6 +5,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 
+
+// utilisation du module 'helmet' pour la sécurité en protégeant l'application de certaines vulnérabilités
+// il sécurise nos requêtes HTTP, sécurise les en-têtes, contrôle la prélecture DNS du navigateur, empêche le détournement de clics
+// et ajoute une protection XSS mineure et protège contre le reniflement de TYPE MIME
+// cross-site scripting, sniffing et clickjacking
+const helmet = require('helmet');
+
 // Ajout des routes pour l'identification & l'authentification
 const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
@@ -40,6 +47,10 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
+
+// Sécuriser Express en définissant divers en-têtes HTTP - https://www.npmjs.com/package/helmet#how-it-works
+// On utilise helmet pour plusieurs raisons notamment la mise en place du X-XSS-Protection afin d'activer le filtre de script intersites(XSS) dans les navigateurs web
+app.use(helmet());
 
 // Enregistrement du routeur pour toutes les demandes effectuées vers /api/sauces.
 app.use('/api/sauces', saucesRoutes);
