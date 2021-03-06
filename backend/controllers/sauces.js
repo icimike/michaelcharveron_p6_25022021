@@ -1,11 +1,10 @@
 // Activation du mode STRICT de Javascript
 "use strict";
 
-// import des packages
 const Sauces = require('../models/sauces');
 const fs = require('fs');
 
-// Fonction de création d'une sauce
+// Création d'une sauce
 exports.createSauces = (req, res, next) => {
   const sauce = JSON.parse(req.body.sauce);
   delete sauce._id;
@@ -28,14 +27,14 @@ exports.createSauces = (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 };
 
-// Fonction de récupération d'une sauce
+// Récupération d'une sauce
 exports.getOneSauces = (req, res, next) => {
   Sauces.findOne({_id: req.params.id,})
   .then((sauce) => {res.status(200).json(sauce);})
   .catch((error) => {res.status(404).json({error: error});});
 };
 
-// Fonction de modification d'une sauce
+// Modification d'une sauce
 exports.modifySauces = (req, res, next) => {
   let sauceM = req.body;
   let sauceF = req.file;
@@ -72,7 +71,7 @@ exports.modifySauces = (req, res, next) => {
   }
 };
 
-// Fonction de suppression d'une sauce
+// Suppression d'une sauce
 exports.deleteSauces = (req, res, next) => {
   Sauces.findOne({ _id: req.params.id })
   .then(sauce => {
@@ -86,13 +85,13 @@ exports.deleteSauces = (req, res, next) => {
   .catch(error => res.status(500).json({ error }));
 };
 
-// Fonction de récupération de la liste des Sauces
+// Récupération de la liste des Sauces
 exports.getAllSauces = (req, res, next) => {
   Sauces.find().then((sauce) => {res.status(200).json(sauce);})
   .catch((error) => {res.status(400).json({error: error});});
 };
 
-// Fonction Like/Dislike
+// Like/Dislike
 exports.likeSauces = (req, res, next) => {
   let uid = req.body.userId, like = req.body.like;
   

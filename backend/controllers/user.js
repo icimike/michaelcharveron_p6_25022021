@@ -1,12 +1,11 @@
 // Activation du mode STRICT de Javascript
 "use strict";
 
-// import des packages
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// Fonction de Signup
+// Signup
 exports.signup = (req, res, next) => {
   // regex pour exiger un mot de passe fort (Minimum eight characters, at least one letter and one number)
   const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
@@ -32,7 +31,7 @@ exports.signup = (req, res, next) => {
   }
 };
 
-// Fonction de Login
+// Login
 exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email })
   .then(user => {
