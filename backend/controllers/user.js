@@ -1,9 +1,11 @@
 // Activation du mode STRICT de Javascript
 "use strict";
 
-const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+
+const User = require('../models/User');
 
 // Signup
 exports.signup = (req, res, next) => {
@@ -13,12 +15,13 @@ exports.signup = (req, res, next) => {
   // (Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character)
   // const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,}$/; 
   const password = req.body.password;
+  const emailHash = crypto.createHash('sha256').update(req.body.email).digest('hex');
 
   if (password.match(regex)) {
   bcrypt.hash(password, 10)
     .then(hash => {
       const user = new User({
-        email: req.body.email,
+        email: emailHash,
         password: hash
       });
       user.save()
@@ -33,7 +36,10 @@ exports.signup = (req, res, next) => {
 
 // Login
 exports.login = (req, res, next) => {
-  User.findOne({ email: req.body.email })
+
+  const emailHash = crypto.createHash('sha256').update(req.body.email).digest('hex');
+
+  User.findOne({ email: emailHash })
   .then(user => {
     if (!user) {
     return res.status(401).json({ error: 'Utilisateur non trouvé !' });
