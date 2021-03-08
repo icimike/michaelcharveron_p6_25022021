@@ -55,12 +55,12 @@ sa machine
 
 ### Utilisé dans ce projet
 
-| Technologies             | et outils          |
+| Technologies             |    Outils          |
 |:------------------------:|:------------------:|
 | Framework: Express       | Visual Studio Code |
 | Serveur: NodeJS          | Git/GitHub         |
 | Base de données: MongoDB | Mongoose           |
-| Javascript               | xXx                |
+| Javascript               |--------------------|
 
 * Hébergement sur MongoDB Atlas
 * Toutes les opérations de la base de données utilisent le pack Mongoose avec des schémas de données stricts.

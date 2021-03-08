@@ -11,9 +11,6 @@ const User = require('../models/User');
 exports.signup = (req, res, next) => {
   // regex pour exiger un mot de passe fort (Minimum eight characters, at least one letter and one number)
   const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-  // regex pour un mot de passe plus fort :
-  // (Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character)
-  // const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,}$/; 
   const password = req.body.password;
   const emailHash = crypto.createHash('sha256').update(req.body.email).digest('hex');
 
@@ -36,7 +33,6 @@ exports.signup = (req, res, next) => {
 
 // Login
 exports.login = (req, res, next) => {
-
   const emailHash = crypto.createHash('sha256').update(req.body.email).digest('hex');
 
   User.findOne({ email: emailHash })
